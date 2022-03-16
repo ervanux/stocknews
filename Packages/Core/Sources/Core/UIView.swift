@@ -19,4 +19,14 @@ public extension UIView {
             bottomAnchor.constraint(equalTo: superview.bottomAnchor)
         ])
     }
+
+    func pinToCenterOfParent() {
+        guard let superview = superview else { return }
+
+        translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            centerXAnchor.constraint(equalTo: superview.centerXAnchor),
+            centerYAnchor.constraint(equalTo: superview.centerYAnchor)
+        ])
+    }
 }

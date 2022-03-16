@@ -23,10 +23,6 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Carthage
   - Pods
   - DerivedData
-  - AppFolder\ App/Class/*
-  - BaseAppTests
-  - Packages/Network/Tests/NetworkTests
- # - AppFolder\ App/ViewController/* //Enabled for this
 
 analyzer_rules: # Rules run by `swiftlint analyze` (experimental)
   - explicit_self

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import City
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
@@ -13,7 +14,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
-        window?.rootViewController = App().firstScreen()
+        window?.rootViewController = Coordinator.start()
         window?.makeKeyAndVisible()
     }
 }

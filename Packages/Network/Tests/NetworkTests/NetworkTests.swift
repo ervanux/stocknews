@@ -1,6 +1,7 @@
 import XCTest
 @testable import Network
 
+// swiftlint:disable force_cast
 final class NetworkTests: XCTestCase {
     var network: NetworkProvidable!
     let request = URLRequest(url: URL(string: "https://google.com")!)
@@ -22,7 +23,7 @@ final class NetworkTests: XCTestCase {
             let testObject: [TestObject] = try await network.fetch(request: request)
             XCTAssertEqual(1, testObject.count)
             XCTAssertEqual(testObject.first!.name, "test")
-        } catch  {
+        } catch {
             XCTAssertThrowsError(error)
         }
     }
@@ -37,7 +38,7 @@ final class NetworkTests: XCTestCase {
         network = DummyNetworkWithError()
         do {
             let _: [TestObject] = try await network.fetch(request: request)
-        } catch  {
+        } catch {
             XCTAssertNoThrow(error)
         }
     }
