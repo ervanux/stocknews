@@ -17,7 +17,7 @@ public class Coordinator {
         // To prevent creating another instance. it is singleton
     }
 
-    private lazy var network: NetworkProvidable = {
+    lazy var network: NetworkProvidable = {
         NetworkProvider()
     }()
 

@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import Combine
 
 public protocol NetworkProvidable {
     func fetch<Model: Codable>(request: URLRequest) async throws -> Model
+    func fetch<Model: Decodable>(url: URL) -> AnyPublisher<Model, NetworkError>
 }

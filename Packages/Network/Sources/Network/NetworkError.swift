@@ -7,7 +7,8 @@
 
 import Foundation
 
-enum NetworkError: Error {
+public enum NetworkError: Error {
     case invalidResponse
     case invalidData(Error)
+    case parserError(reason: String)
 }

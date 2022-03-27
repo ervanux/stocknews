@@ -6,11 +6,33 @@
 //
 
 import Foundation
+import Network
+import Combine
+import Core
 
 class StockNewsViewModel {
-    let repository: Repository
+    var articles = Observable<[Article]>(nil)
 
-    init(repository: Repository) {
-        self.repository = repository
+    var subscribers: Set<AnyCancellable> = []
+
+    init() {
+        if let url = URL(string: Endpoints.news.constructUrl()) {
+            load(url: url)
+        }
+    }
+
+    func load(url: URL) {
+        Coordinator.shared.network
+            .fetch(url: url)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print("Error: \(error.localizedDescription)")
+                }
+            }, receiveValue: {[weak self] (model: News) in
+                self?.articles.value =  model.articles
+            }).store(in: &subscribers)
     }
 }
