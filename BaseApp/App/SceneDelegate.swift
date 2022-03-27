@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import City
+import StockNews
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
