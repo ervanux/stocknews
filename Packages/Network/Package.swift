@@ -13,10 +13,15 @@ let package = Package(
             name: "Network",
             targets: ["Network"])
     ],
+    dependencies: [
+        .package(name: "CodableCSV", url: "https://github.com/dehesa/CodableCSV", from: "0.6.7")
+    ],
     targets: [
         .target(
             name: "Network",
-            dependencies: []),
+            dependencies: [
+                "CodableCSV"
+            ]),
         .testTarget(
             name: "NetworkTests",
             dependencies: ["Network"])

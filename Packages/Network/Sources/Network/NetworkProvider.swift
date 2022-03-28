@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import CodableCSV
 
 public struct NetworkProvider: NetworkProvidable {
     var session: URLSession
@@ -62,7 +63,7 @@ public extension NetworkProvider {
 
     func fetch<Model: Decodable>(url: URL) -> AnyPublisher<Model, NetworkError> {
         fetch(url: url)
-            .decode(type: Model.self, decoder: JSONDecoder())
+            .decode(type: Model.self, decoder: decoder)
             .mapError { error in
                 if let error = error as? DecodingError {
                     var errorToReport = error.localizedDescription

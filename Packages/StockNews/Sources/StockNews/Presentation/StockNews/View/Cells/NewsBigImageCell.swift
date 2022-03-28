@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  NewsBigImageCell.swift
 //  
 //
 //  Created by Erkan Ugurlu on 27.03.2022.
@@ -8,6 +8,7 @@
 import UIKit
 import Core
 import Combine
+import Network
 
 class NewsBigImageCell: UICollectionViewCell {
     private var subscription: AnyCancellable?
@@ -19,7 +20,7 @@ class NewsBigImageCell: UICollectionViewCell {
         didSet {
             label.text = model?.title
             if let urlString = model?.urlToImage, let url = URL(string: urlString) {
-                load(url: url) // Dont do this here!
+                subscription = imageView.loadImage(with: url) // Move this to a better place. Like prefetch?
             }
         }
     }
@@ -42,26 +43,17 @@ class NewsBigImageCell: UICollectionViewCell {
 
 private extension NewsBigImageCell {
     func setupSubviews() {
-        contentView.addSubview(label)
-
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(systemName: "plus")
-        contentView.addSubview(imageView)
-        imageView.pinToParent()
-    }
-}
-
-private extension NewsBigImageCell {
-    func load(url: URL) {
-        subscription = URLSession.shared
-            .dataTaskPublisher(for: url)
-            .map { UIImage(data: $0.data) }
-            .replaceError(with: nil)
-            .receive(on: DispatchQueue.main)
-            .assign(to: \.image, on: imageView)
-    }
-
-    func cancel() {
-        subscription?.cancel()
+        label.numberOfLines = 2
+        label.textAlignment = .center
+        label.font = .preferredFont(forTextStyle: .caption1)
+        let content = UIStackView(arrangedSubviews: [
+            label,
+            imageView
+        ])
+        content.axis = .vertical
+        content.spacing = 4
+        contentView.addSubview(content)
+        content.pinToParent(constant: 2)
     }
 }

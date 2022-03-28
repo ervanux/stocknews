@@ -28,6 +28,6 @@ public class Coordinator {
 
 extension Coordinator: EntryPointProvider {
     public static func start() -> UIViewController {
-        StockNewsViewController(repository: shared.respository)
+        UINavigationController(rootViewController: StockNewsViewController(repository: shared.respository))
     }
 }
