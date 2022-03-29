@@ -7,12 +7,15 @@
 
 import UIKit
 import Core
+import Combine
 
 class StockNewsViewController: UIViewController {
-    let viewModel: StockNewsViewModel
-    let collectionViewDataSource: StockNewsCollectionDataSource
+    private let viewModel: StockNewsViewModel
+    private let collectionViewDataSource: StockNewsCollectionDataSource
+    private var articleSubscription: AnyCancellable?
+    private var stockSubscription: AnyCancellable?
 
-    lazy var collectionView: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: MainPageLayout())
         collectionView.register(StockTickerCell.self, forCellWithReuseIdentifier: StockTickerCell.identifierForReuse)
         collectionView.register(NewsBigImageCell.self, forCellWithReuseIdentifier: NewsBigImageCell.identifierForReuse)
@@ -24,7 +27,7 @@ class StockNewsViewController: UIViewController {
     }()
 
     init(repository: Repository) {
-        self.viewModel = StockNewsViewModel()
+        self.viewModel = StockNewsViewModel(repository: repository)
         self.collectionViewDataSource = StockNewsCollectionDataSource(viewModel: viewModel)
         super.init(nibName: nil, bundle: nil)
     }
@@ -36,12 +39,14 @@ class StockNewsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Finance App"
+        title = "StockNews"
         navigationController?.hidesBarsOnSwipe = true
         setupSubviews()
-        viewModel.articles.bind { [weak self] _ in
+        subscribeToNews()
+        subscribeToStocks()
+        viewModel.fetchContent {[weak self] errorMessage in
             DispatchQueue.main.async {
-                self?.collectionView.reloadSections([1, 2])
+                self?.displayAlert(message: errorMessage ?? "Unknown Error") // TODO: Better error handling!
             }
         }
     }
@@ -52,5 +57,27 @@ private extension StockNewsViewController {
         collectionView.dataSource = collectionViewDataSource
         view.addSubview(collectionView)
         collectionView.pinToParent()
+    }
+}
+
+private extension StockNewsViewController {
+
+    func subscribeToNews() {
+        articleSubscription = viewModel.articles
+            .receive(on: DispatchQueue.main)
+            .sink {[weak self] _ in
+                self?.collectionView.reloadData()
+            }
+    }
+
+    func subscribeToStocks() {
+        stockSubscription = viewModel.prices
+            .receive(on: DispatchQueue.main)
+            .sink {[weak self] prices in
+                // BUG: count is same but models are different
+                if prices.count != self?.collectionView.numberOfItems(inSection: Section.stock.rawValue) {
+                    self?.collectionView.reloadData()
+                }
+            }
     }
 }

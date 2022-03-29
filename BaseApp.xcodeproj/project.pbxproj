@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		04ABAD9C27F09BCE006D869A /* City in Frameworks */ = {isa = PBXBuildFile; productRef = 04ABAD9B27F09BCE006D869A /* City */; };
 		04ABADA027F0A507006D869A /* StockNews in Frameworks */ = {isa = PBXBuildFile; productRef = 04ABAD9F27F0A507006D869A /* StockNews */; };
 		04EE165F27DE308E008715C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EE165E27DE308E008715C3 /* AppDelegate.swift */; };
 		04EE166827DE3090008715C3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04EE166727DE3090008715C3 /* Assets.xcassets */; };
@@ -16,7 +15,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		04ABAD9A27F09BC5006D869A /* City */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = City; path = Packages/City; sourceTree = "<group>"; };
 		04ABAD9D27F0A4FC006D869A /* StockNews */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = StockNews; path = Packages/StockNews; sourceTree = "<group>"; };
 		04EE165B27DE308E008715C3 /* BaseApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BaseApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04EE165E27DE308E008715C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -33,7 +31,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				04ABADA027F0A507006D869A /* StockNews in Frameworks */,
-				04ABAD9C27F09BCE006D869A /* City in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,7 +94,6 @@
 		04EE169627DE3A3C008715C3 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				04ABAD9A27F09BC5006D869A /* City */,
 				04ABAD9D27F0A4FC006D869A /* StockNews */,
 			);
 			name = Packages;
@@ -121,7 +117,6 @@
 			);
 			name = BaseApp;
 			packageProductDependencies = (
-				04ABAD9B27F09BCE006D869A /* City */,
 				04ABAD9F27F0A507006D869A /* StockNews */,
 			);
 			productName = BaseApp;
@@ -414,10 +409,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		04ABAD9B27F09BCE006D869A /* City */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = City;
-		};
 		04ABAD9F27F0A507006D869A /* StockNews */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = StockNews;

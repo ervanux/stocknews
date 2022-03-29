@@ -6,16 +6,20 @@
 //
 
 import UIKit
+import Combine
 
-class StockNewsCollectionDataSource: NSObject, UICollectionViewDataSource {
+class StockNewsCollectionDataSource: NSObject {
     let viewModel: StockNewsViewModel
 
     init(viewModel: StockNewsViewModel) {
         self.viewModel = viewModel
     }
+}
+
+extension StockNewsCollectionDataSource: UICollectionViewDataSource {
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        3
+        Section.allCases.count
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -25,42 +29,27 @@ class StockNewsCollectionDataSource: NSObject, UICollectionViewDataSource {
 
         return viewModel.itemCount(of: section)
     }
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let section = Section(rawValue: indexPath.section) else {
             fatalError("Invalid section")
         }
 
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: section.identifierForCellinSection, for: indexPath)
+
         switch section {
         case .stock:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StockTickerCell.identifierForReuse,
-                                                                for: indexPath) as? StockTickerCell else {
-                fatalError("Invalid cell type")
-            }
-
-            let model = viewModel.prices.value?[indexPath.row]
-            viewModel.prices.bind {[weak cell] prices in
-                let newModel = prices?.first { $0.title == model?.title }
-
-                DispatchQueue.main.async {
-                    cell?.model = newModel
-                }
-            }
-
+            guard let cell = cell as? StockTickerCell else { fatalError("Invalid cell type") }
+            makeSubsription(for: cell, at: indexPath.row)
             return cell
         case .photoNews:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NewsBigImageCell.identifierForReuse,
-                                                                for: indexPath) as? NewsBigImageCell else {
-                fatalError("Invalid cell type")
-            }
-            let model = viewModel.articles.value?[indexPath.row]
+            guard  let cell = cell as? NewsBigImageCell else { fatalError("Invalid cell type") }
+            let model = viewModel.articles.value[indexPath.row]
             cell.model = model
             return cell
         case .textNews:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NewsHorizontalCell.identifierForReuse,
-                                                                for: indexPath) as? NewsHorizontalCell else {
-                fatalError("Invalid cell type")
-            }
-            let model = viewModel.articles.value?[indexPath.row + 6]
+            guard let cell = cell as? NewsHorizontalCell else { fatalError("Invalid cell type") }
+            let model = viewModel.articles.value[indexPath.row + 6]
             cell.model = model
             return cell
         }
@@ -81,5 +70,32 @@ class StockNewsCollectionDataSource: NSObject, UICollectionViewDataSource {
         header.title.text = viewModel.sectionTitle(section: section)
 
         return header
+    }
+}
+
+extension StockNewsCollectionDataSource {
+
+    fileprivate func makeSubsription(for cell: StockTickerCell, at index: Int) {
+        // TODO: Check this again. Maybe there is a best practice
+        cell.priceSubscription = viewModel.prices
+            .flatMap({[weak self] prices in
+                Just(prices.first { $0.title == self?.viewModel.prices.value[index].title })
+            })
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.model, on: cell)
+    }
+}
+
+private extension Section {
+
+    var identifierForCellinSection: String {
+        switch self {
+        case .stock:
+            return StockTickerCell.identifierForReuse
+        case .photoNews:
+            return NewsBigImageCell.identifierForReuse
+        case .textNews:
+            return NewsHorizontalCell.identifierForReuse
+        }
     }
 }

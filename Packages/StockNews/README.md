@@ -1,18 +1,27 @@
 # StockNews
 
-A description of this package.
+## Description
+- Reactive programing with Combine
+- Modularization with SPM
+- Design pattern is MVVM + Coordinator
+- Uses UIKit in View layer
+- Uses repository pattern for data layer
+
+Developed with Xcode v13.2.1 and test on iOS 15.2 simulator
 
 ## TODO
-- Move Datasource out
-- Section headers
-
-- Replace custom observer flows
-- Error handling
-- Enable repository
-- Make retry process more reactie
-- implement a prefetch logic
-- Abstractions for testability
-- Unittest
-- Pull to Refresh
+- Better error handling
+- Show a hud for long running calls
+- Make retry process more reactive
+- Need a paging for last section
+- Gather all constants
 - Handle date on cell
-- check memory leaks
+- Handle all todos in code
+
+## Extra
+- Pull to Refresh
+- Implement a prefetch logic
+- Unittest
+- Move translation to localizable
+- Abstractions for testability
+- Caching for images

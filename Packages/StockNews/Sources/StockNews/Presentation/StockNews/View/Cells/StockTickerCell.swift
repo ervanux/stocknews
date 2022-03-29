@@ -10,7 +10,7 @@ import Core
 import Combine
 
 class StockTickerCell: UICollectionViewCell {
-    private var subscription: AnyCancellable?
+    var priceSubscription: AnyCancellable?
 
     let title: UILabel
     let price: UILabel
@@ -22,9 +22,9 @@ class StockTickerCell: UICollectionViewCell {
                 price.text = val.usdString
 
                 if val < 0 {
-                    backgroundColor = .red
+                    price.textColor = .red
                 } else {
-                    backgroundColor = .green
+                    price.textColor = .green
                 }
             }
         }
@@ -35,7 +35,7 @@ class StockTickerCell: UICollectionViewCell {
         price = UILabel()
 
         super.init(frame: frame)
-        backgroundColor = .white
+        backgroundColor = .lightGray.withAlphaComponent(0.1)
 
         setupSubviews()
     }

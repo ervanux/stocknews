@@ -8,7 +8,7 @@
 import UIKit
 import Core
 
-enum Section: Int {
+enum Section: Int, CaseIterable {
     case stock = 0
     case photoNews = 1
     case textNews = 2
@@ -27,8 +27,8 @@ class MainPageLayout: UICollectionViewCompositionalLayout {
             let layoutSection: NSCollectionLayoutSection
             switch section {
             case .stock:
-                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1 / 4), heightDimension: .absolute(60))
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1 / 14))
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1 / 4), heightDimension: .fractionalHeight(1))
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(60))
                 let item: NSCollectionLayoutItem = NSCollectionLayoutItem(layoutSize: itemSize)
                 item.contentInsets = contentInsets
                 let group: NSCollectionLayoutGroup = .horizontal(layoutSize: groupSize, subitems: [item])
@@ -61,7 +61,6 @@ class MainPageLayout: UICollectionViewCompositionalLayout {
                       elementKind: SectionHeaderView.identifierForReuse,
                       alignment: .topLeading)
             ]
-            layoutSection.contentInsets.bottom = 16
 
             return layoutSection
         }

@@ -13,3 +13,5 @@ struct Article: Codable {
     let urlToImage: String
     let description: String
 }
+
+// TODO: Coding keys

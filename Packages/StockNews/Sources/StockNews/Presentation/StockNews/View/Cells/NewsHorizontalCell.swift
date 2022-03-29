@@ -86,7 +86,7 @@ private extension NewsHorizontalCell {
         containerStack.pinToParent(constant: 8)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            imageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.4)
+            imageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.3)
         ])
     }
 }
